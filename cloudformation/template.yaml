@@ -1,0 +1,114 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: IP-type target group for a web (public) or app (internal) tier
+
+Parameters:
+  ProjectName:
+    Type: String
+    Default: "cfn-nested"
+    AllowedPattern: "^[a-z0-9-]{1,12}$"
+    Description: Short project name used in the target group name and tags
+  Environment:
+    Type: String
+    Default: "dev"
+    AllowedValues: [dev, staging, prod]
+  TierType:
+    Type: String
+    Default: "web"
+    AllowedValues: [web, app]
+    Description: >-
+      web = public Web tier (HTTP 80, health check /);
+      app = internal App tier (HTTP 3001, health check /api/books)
+  Port:
+    Type: String
+    Default: ""
+    AllowedPattern: "^[0-9]{0,5}$"
+    Description: Optional port override. Leave empty to use the tier default
+  HealthCheckPath:
+    Type: String
+    Default: ""
+    Description: Optional health check path override. Leave empty to use the tier default
+  VpcId:
+    Type: AWS::EC2::VPC::Id
+  CiSuffix:
+    Type: String
+    Default: ""
+    AllowedPattern: "^[a-z0-9-]*$"
+    Description: Optional suffix appended to the target group name for CI deployments
+
+Mappings:
+  TierSettings:
+    web:
+      ServiceName: web
+      Port: "80"
+      HealthCheckPath: "/"
+    app:
+      ServiceName: app
+      Port: "3001"
+      HealthCheckPath: /api/books
+
+Conditions:
+  HasCiSuffix: !Not [!Equals [!Ref CiSuffix, ""]]
+  HasPortOverride: !Not [!Equals [!Ref Port, ""]]
+  HasHealthCheckPathOverride: !Not [!Equals [!Ref HealthCheckPath, ""]]
+
+Resources:
+  TargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Name: !If
+        - HasCiSuffix
+        - !Sub
+          - "${ProjectName}-${Environment}-${ServiceName}-${CiSuffix}-tg"
+          - ServiceName: !FindInMap [TierSettings, !Ref TierType, ServiceName]
+        - !Sub
+          - "${ProjectName}-${Environment}-${ServiceName}-tg"
+          - ServiceName: !FindInMap [TierSettings, !Ref TierType, ServiceName]
+      Protocol: HTTP
+      Port: !If
+        - HasPortOverride
+        - !Ref Port
+        - !FindInMap [TierSettings, !Ref TierType, Port]
+      TargetType: ip
+      VpcId: !Ref VpcId
+      HealthCheckProtocol: HTTP
+      HealthCheckPort: traffic-port
+      HealthCheckPath: !If
+        - HasHealthCheckPathOverride
+        - !Ref HealthCheckPath
+        - !FindInMap [TierSettings, !Ref TierType, HealthCheckPath]
+      HealthCheckIntervalSeconds: 30
+      HealthCheckTimeoutSeconds: 5
+      HealthyThresholdCount: 3
+      UnhealthyThresholdCount: 3
+      Matcher:
+        HttpCode: "200-299"
+      Tags:
+        - Key: Name
+          Value: !If
+            - HasCiSuffix
+            - !Sub
+              - "${ProjectName}-${Environment}-${ServiceName}-${CiSuffix}-tg"
+              - ServiceName: !FindInMap [TierSettings, !Ref TierType, ServiceName]
+            - !Sub
+              - "${ProjectName}-${Environment}-${ServiceName}-tg"
+              - ServiceName: !FindInMap [TierSettings, !Ref TierType, ServiceName]
+        - Key: Project
+          Value: !Ref ProjectName
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Tier
+          Value: !Ref TierType
+        - Key: Service
+          Value: !FindInMap [TierSettings, !Ref TierType, ServiceName]
+
+Outputs:
+  TargetGroupArn:
+    Description: ARN to pass to the ALB stack's listener rules
+    Value: !Ref TargetGroup
+    Export:
+      Name: !Sub
+        - "${ProjectName}-${Environment}-${ServiceName}-tg-arn"
+        - ServiceName: !FindInMap [TierSettings, !Ref TierType, ServiceName]
+  TargetGroupName:
+    Description: Full name of the target group
+    Value: !GetAtt TargetGroup.TargetGroupName

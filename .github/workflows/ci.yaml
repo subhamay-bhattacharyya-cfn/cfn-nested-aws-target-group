@@ -3,17 +3,17 @@ description: CI Build Workflow for CloudFormation VPC Subnet Stack run by {{ git
 
 on:
   workflow_dispatch:
-  # push:
-  #   branches:
-  #     - feature/**
-  #     - bug/**
-  #   paths:
-  #     - 'cloudformation/**'
-  #     - .github/workflows/ci.yaml
-  # pull_request:
-  #   branches: [main]
-  #   paths:
-  #     - 'cloudformation/**'
+  push:
+    branches:
+      - feature/**
+      - bug/**
+    paths:
+      - 'cloudformation/**'
+      - .github/workflows/ci.yaml
+  pull_request:
+    branches: [main]
+    paths:
+      - 'cloudformation/**'
 
 permissions:
   actions: write
@@ -54,7 +54,7 @@ jobs:
   ci-build:
     name: CI Build
     needs: load-config
-    uses: subhamay-bhattacharyya-gha/cfn-ci-build-reusable-wf/.github/workflows/ci.yaml@v1.0.0
+    uses: subhamay-bhattacharyya-gha/cfn-ci-build-reusable-wf/.github/workflows/ci.yaml@main
     with:
       environment: ci
       stack-name: ${{ needs.load-config.outputs.stack-name }}

@@ -1,246 +1,201 @@
-# CloudFormation S3 Template Repository
+# CloudFormation Nested Stac Template : Target Group
 
 <!-- Row 1: Status - Most Important -->
-[![Release](https://github.com/subhamay-bhattacharyya-cfn/cloudformation-template/actions/workflows/release.yaml/badge.svg)](https://github.com/subhamay-bhattacharyya-cfn/cloudformation-template)&nbsp;[![GitHub Repo](https://img.shields.io/badge/GitHub-Repository-blue?logo=github)](https://github.com/subhamay-bhattacharyya-cfn/cloudformation-template)&nbsp;[![Issues](https://img.shields.io/github/issues/subhamay-bhattacharyya-cfn/cloudformation-template)](https://github.com/subhamay-bhattacharyya-cfn/cloudformation-template/issues)&nbsp;[![Last Commit](https://img.shields.io/github/last-commit/subhamay-bhattacharyya-cfn/cloudformation-template)](https://github.com/subhamay-bhattacharyya-cfn/cloudformation-template/commits)
+[![Release](https://img.shields.io/github/v/release/subhamay-bhattacharyya-cfn/cfn-nested-aws-target-group?label=Release)](https://github.com/subhamay-bhattacharyya-cfn/cfn-nested-aws-target-group/releases)&nbsp;[![Release Workflow](https://github.com/subhamay-bhattacharyya-cfn/cfn-nested-aws-target-group/actions/workflows/release.yaml/badge.svg)](https://github.com/subhamay-bhattacharyya-cfn/cfn-nested-aws-target-group/actions/workflows/release.yaml)&nbsp;[![Issues](https://img.shields.io/github/issues/subhamay-bhattacharyya-cfn/cfn-nested-aws-target-group)](https://github.com/subhamay-bhattacharyya-cfn/cfn-nested-aws-target-group/issues)&nbsp;[![Last Commit](https://img.shields.io/github/last-commit/subhamay-bhattacharyya-cfn/cfn-nested-aws-target-group)](https://github.com/subhamay-bhattacharyya-cfn/cfn-nested-aws-target-group/commits)
 
 <!-- Row 2: Code Quality -->
-[![Top Language](https://img.shields.io/github/languages/top/subhamay-bhattacharyya-cfn/cloudformation-template)](https://github.com/subhamay-bhattacharyya-cfn/cloudformation-template)&nbsp;[![Commits](https://img.shields.io/github/commit-activity/t/subhamay-bhattacharyya-cfn/cloudformation-template)](https://github.com/subhamay-bhattacharyya-cfn/cloudformation-template/commits)
+[![Top Language](https://img.shields.io/badge/Languages-Python%20%7C%20YAML-blue)](https://github.com/subhamay-bhattacharyya-cfn/cfn-nested-aws-target-group)&nbsp;[![Commits](https://img.shields.io/github/commit-activity/t/subhamay-bhattacharyya-cfn/cfn-nested-aws-target-group)](https://github.com/subhamay-bhattacharyya-cfn/cfn-nested-aws-target-group/commits)
 
 <!-- Row 3: Tech Stack -->
-[![CloudFormation](https://img.shields.io/badge/CloudFormation-IaC-orange?logo=amazon&logoColor=white)](https://aws.amazon.com/cloudformation/)&nbsp;[![Built with Claude Code](https://img.shields.io/badge/Built_with-Claude_Code-D97757?logo=anthropic&logoColor=white)](https://claude.ai/)
+[![CloudFormation](https://img.shields.io/badge/CloudFormation-IaC-orange?logo=amazonaws&logoColor=white)](https://aws.amazon.com/cloudformation/)&nbsp;[![Built with Claude Code](https://img.shields.io/badge/Built_with-Claude_Code-D97757?logo=anthropic&logoColor=white)](https://claude.ai/)
 
 <!-- Row 4: Repository Info -->
-[![Files](https://img.shields.io/github/directory-file-count/subhamay-bhattacharyya-cfn/cloudformation-template)](https://github.com/subhamay-bhattacharyya-cfn/cloudformation-template)&nbsp;[![Repo Size](https://img.shields.io/github/repo-size/subhamay-bhattacharyya-cfn/cloudformation-template)](https://github.com/subhamay-bhattacharyya-cfn/cloudformation-template)&nbsp;[![Release Date](https://img.shields.io/github/release-date/subhamay-bhattacharyya-cfn/cloudformation-template)](https://github.com/subhamay-bhattacharyya-cfn/cloudformation-template/releases)
+[![Files](https://img.shields.io/github/directory-file-count/subhamay-bhattacharyya-cfn/cfn-nested-aws-target-group)](https://github.com/subhamay-bhattacharyya-cfn/cfn-nested-aws-target-group)&nbsp;[![Repo Size](https://img.shields.io/github/repo-size/subhamay-bhattacharyya-cfn/cfn-nested-aws-target-group)](https://github.com/subhamay-bhattacharyya-cfn/cfn-nested-aws-target-group)&nbsp;[![Release Date](https://img.shields.io/github/release-date/subhamay-bhattacharyya-cfn/cfn-nested-aws-target-group)](https://github.com/subhamay-bhattacharyya-cfn/cfn-nested-aws-target-group/releases)
 
 <!-- Row 5: Custom Metrics -->
-[![Custom Endpoint](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/bsubhamay/f55f73ac88992d4bd5c9835ee5fd70b6/raw/aws-vpc-cloudformation-fundamentals.json)](https://gist.github.com/subhamay-bhattacharyya/f55f73ac88992d4bd5c9835ee5fd70b6)
+[![Custom Endpoint](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/bsubhamay/88973aebd3457ddfae0c12fe9b6971a1/raw/cfn-nested-aws-target-group.json)](https://gist.github.com/subhamay-bhattacharyya/88973aebd3457ddfae0c12fe9b6971a1)
 
-This repository contains nested CloudFormation templates for deploying S3 buckets with security best practices and optional policy enforcement.
+A nested CloudFormation template that creates an IP-type Application Load Balancer target group for either the public **Web** tier or the internal **App** tier.
 
 ## Overview
 
-This is a **nested stack template** designed to be invoked from a parent/root CloudFormation stack. Templates are stored in this repository and should be uploaded to an S3 bucket for reference by parent stacks.
+The template is designed to be invoked from a parent/root CloudFormation stack. A single template covers both tiers; the `TierType` parameter selects which tier's defaults apply.
 
-## Template Files
+- **Template:** [cloudformation/template.yaml](cloudformation/template.yaml)
+- **Parameter file:** [cloudformation/parameters.json](cloudformation/parameters.json)
+- **Stack config:** [cloudformation/stack-config.json](cloudformation/stack-config.json)
 
-### CloudFormation Templates
+## Tier Defaults
 
-- **`templates/s3-bucket.yaml`** — Nested template for S3 bucket creation (versioning, public access blocking)
-- **`templates/s3-bucket-policy.yaml`** — Optional nested template for S3 bucket policy (encryption enforcement, secure transport)
+| Setting | Web tier (public) | App tier (internal) |
+| --- | --- | --- |
+| `TierType` | `web` | `app` |
+| Service name | `web` | `app` |
+| Target group port | `80` | `3001` |
+| Health check path | `/` | `/api/books` |
+| Export name | `{ProjectName}-{Environment}-web-tg-arn` | `{ProjectName}-{Environment}-app-tg-arn` |
 
-### Parameter Files
-
-- **`parameters/parameters.json`** — Parameter values for development environment
-
-## Template Features
-
-### S3 Bucket Template (s3-bucket.yaml)
-
-- ✅ Versioning enabled by default
-- ✅ Public Access Blocking
-- ✅ Smart bucket naming (project prefix, account ID, environment, region)
-- ✅ Optional CI suffix support
-
-### S3 Bucket Policy Template (s3-bucket-policy.yaml)
-
-- ✅ Encryption enforcement on uploads
-- ✅ Secure transport enforcement (HTTPS only)
-- ✅ Optional/conditional policy rules
+`Port` and `HealthCheckPath` can be set explicitly to override these defaults. Leave them empty to use the tier defaults.
 
 ## Parameters
 
-### S3 Bucket Parameters
+| Parameter | Type | Required | Default | Description |
+| --- | --- | --- | --- | --- |
+| `ProjectName` | String | No | `cfn-nested` | Project prefix. Lowercase letters, digits, and hyphens, up to 12 characters |
+| `Environment` | String | No | `dev` | One of `dev`, `staging`, `prod` |
+| `TierType` | String | No | `web` | One of `web`, `app` |
+| `Port` | String | No | `""` | Port override (0–5 digits). Empty uses the tier default |
+| `HealthCheckPath` | String | No | `""` | Health check path override. Empty uses the tier default |
+| `VpcId` | `AWS::EC2::VPC::Id` | Yes | — | VPC the target group is created in |
+| `CiSuffix` | String | No | `""` | Optional suffix for CI deployments. Lowercase letters, digits, and hyphens |
 
-| Parameter | Type | Default | Description |
-| ----------- | ------ | --------- | ------------- |
-| `ProjectName` | String | — | Project name to use as bucket prefix (required) |
-| `BucketBaseName` | String | `cfn-bucket` | Base name for S3 bucket |
-| `environment` | String | `devl` | Deployment environment (devl, stag, prod) |
-| `CiSuffix` | String | `""` | Optional CI suffix to append to bucket name |
+## Naming
 
-### S3 Bucket Policy Parameters
+The target group name and the `Name` tag follow this pattern:
 
-**Generic (Standalone) Mode:**
+```bash
+{ProjectName}-{Environment}-{ServiceName}-tg
+```
 
-| Parameter | Type | Description |
-| ----------- | ------ | ------------- |
-| `BucketName` | String | Direct bucket name (use for any bucket) |
+When `CiSuffix` is set, the suffix is inserted before `-tg`:
 
-**Integrated Mode (with bucket template):**
+```bash
+{ProjectName}-{Environment}-{ServiceName}-{CiSuffix}-tg
+```
 
-| Parameter | Type | Default | Description |
-| ----------- | ------ | --------- | ------------- |
-| `ProjectName` | String | — | Project name (must match bucket template) |
-| `BucketBaseName` | String | `cfn-bucket` | Base name (must match bucket template) |
-| `environment` | String | `devl` | Environment (must match bucket template) |
-| `CiSuffix` | String | `""` | CI suffix (must match bucket template) |
+Examples:
 
-**Usage:** If `BucketName` is provided (non-empty), it takes precedence. Otherwise, the bucket name is constructed from ProjectName/BucketBaseName/environment/CiSuffix.
+- `cfn-nested-prod-web-tg`
+- `cfn-nested-dev-app-tg-42`
 
-## Outputs
+Target group names are limited to 32 characters. Long project, environment, or service names combined with a CI suffix can exceed this limit and fail at deploy time.
 
-### S3 Bucket Template Outputs
+## Implementation Details
 
-- `S3BucketName` — S3 bucket name
-- `S3BucketArn` — S3 bucket ARN
+### Mappings and Conditions
 
-### S3 Bucket Policy Template Outputs
+- **`TierSettings` mapping** holds the service name, port, and health check path for each tier. The resources read values from it with `!FindInMap` using `!Ref TierType`.
+- **`HasCiSuffix`** is true when `CiSuffix` is not empty. It chooses between the name with and without the suffix.
+- **`HasPortOverride`** and **`HasHealthCheckPathOverride`** are true when the corresponding parameter is not empty. They choose between the parameter value and the tier default.
 
-- `BucketName` — Bucket name with policy applied
-- `PolicyStatus` — Policy application status (Applied)
+### Resources
+
+A single `AWS::ElasticLoadBalancingV2::TargetGroup` named `TargetGroup` is created with these fixed settings:
+
+| Property | Value |
+| --- | --- |
+| `Protocol` | `HTTP` |
+| `TargetType` | `ip` |
+| `HealthCheckProtocol` | `HTTP` |
+| `HealthCheckPort` | `traffic-port` |
+| `HealthCheckIntervalSeconds` | `30` |
+| `HealthCheckTimeoutSeconds` | `5` |
+| `HealthyThresholdCount` | `3` |
+| `UnhealthyThresholdCount` | `3` |
+| `Matcher.HttpCode` | `200-299` |
+
+Tags:
+
+| Key | Value |
+| --- | --- |
+| `Name` | Target group name (see [Naming](#naming)) |
+| `Project` | `ProjectName` |
+| `Environment` | `Environment` |
+| `Tier` | `TierType` |
+| `Service` | Service name from the tier mapping |
+
+### Outputs
+
+| Output | Value | Export |
+| --- | --- | --- |
+| `TargetGroupArn` | Target group ARN (`!Ref TargetGroup`) | `{ProjectName}-{Environment}-{ServiceName}-tg-arn` |
+| `TargetGroupName` | Full target group name (`!GetAtt TargetGroup.TargetGroupName`) | — |
+
+The `TargetGroupArn` export is what the ALB stack's listener rules should import.
 
 ## Usage
 
-### 1. Upload Templates to S3
-
-```bash
-aws s3 cp templates/s3-bucket.yaml s3://your-cfn-bucket/templates/s3-bucket.yaml
-aws s3 cp templates/s3-bucket-policy.yaml s3://your-cfn-bucket/templates/s3-bucket-policy.yaml
-```
-
-### 2. Reference from Parent Stack
-
-In your parent/root CloudFormation template:
+### 1. Reference from a Parent Stack
 
 ```yaml
-S3BucketNestedStack:
+WebTargetGroupStack:
   Type: AWS::CloudFormation::Stack
   Properties:
-    TemplateURL: https://s3.amazonaws.com/your-cfn-bucket/templates/s3-bucket.yaml
+    TemplateURL: https://s3.amazonaws.com/your-cfn-bucket/templates/template.yaml
     Parameters:
       ProjectName: !Ref ProjectName
-      BucketBaseName: cfn-bucket
-      environment: !Ref Environment
+      Environment: !Ref Environment
+      TierType: web
+      VpcId: !Ref VpcId
       CiSuffix: !Ref CiSuffix
     Tags:
       - Key: Environment
         Value: !Ref Environment
 
-S3PolicyNestedStack:
+AppTargetGroupStack:
   Type: AWS::CloudFormation::Stack
-  DependsOn: S3BucketNestedStack
   Properties:
-    TemplateURL: https://s3.amazonaws.com/your-cfn-bucket/templates/s3-bucket-policy.yaml
+    TemplateURL: https://s3.amazonaws.com/your-cfn-bucket/templates/template.yaml
     Parameters:
-      BucketName: !GetAtt S3BucketNestedStack.Outputs.S3BucketName
-      ProjectName: ""
-      BucketBaseName: cfn-bucket
-      environment: !Ref Environment
+      ProjectName: !Ref ProjectName
+      Environment: !Ref Environment
+      TierType: app
+      VpcId: !Ref VpcId
       CiSuffix: !Ref CiSuffix
     Tags:
       - Key: Environment
         Value: !Ref Environment
-
-Outputs:
-  BucketName:
-    Value: !GetAtt S3BucketNestedStack.Outputs.S3BucketName
-  BucketArn:
-    Value: !GetAtt S3BucketNestedStack.Outputs.S3BucketArn
 ```
 
-### 3. Deploy Using AWS CLI
-
-#### Option A: Deploy Bucket Only
+### 2. Upload the Template to S3
 
 ```bash
-# Development (without CI prefix)
-aws cloudformation create-stack \
-  --stack-name cfn-s3-bucket-dev \
-  --template-body file://templates/s3-bucket.yaml \
-  --parameters file://parameters/dev.json
-
-# Staging (without CI prefix)
-aws cloudformation create-stack \
-  --stack-name cfn-s3-bucket-stag \
-  --template-body file://templates/s3-bucket.yaml \
-  --parameters file://parameters/staging.json
-
-# Production (without CI prefix)
-aws cloudformation create-stack \
-  --stack-name cfn-s3-bucket-prod \
-  --template-body file://templates/s3-bucket.yaml \
-  --parameters file://parameters/prod.json
+aws s3 cp cloudformation/template.yaml s3://your-cfn-bucket/templates/template.yaml
 ```
 
-#### Option B: Deploy Bucket + Policy (Recommended)
+### 3. Deploy Directly with the AWS CLI
+
+Create a web tier target group:
 
 ```bash
-# Deploy bucket first
-aws cloudformation create-stack \
-  --stack-name cfn-s3-bucket-dev \
-  --template-body file://templates/s3-bucket.yaml \
-  --parameters file://parameters/dev.json
-
-# Wait for bucket to be created
-aws cloudformation wait stack-create-complete --stack-name cfn-s3-bucket-dev
-
-# Get the bucket name from stack outputs
-BUCKET_NAME=$(aws cloudformation describe-stacks \
-  --stack-name cfn-s3-bucket-dev \
-  --query 'Stacks[0].Outputs[?OutputKey==`S3BucketName`].OutputValue' \
-  --output text)
-
-#### Using Integrated Mode (with bucket template parameters)
-
-```bash
-aws cloudformation create-stack \
-  --stack-name cfn-s3-policy-dev \
-  --template-body file://templates/s3-bucket-policy.yaml \
-  --parameters file://parameters/policy-dev.json
+aws cloudformation deploy \
+  --template-file cloudformation/template.yaml \
+  --stack-name cfn-nested-web-tg-dev \
+  --parameter-overrides \
+    ProjectName=cfn-nested \
+    Environment=dev \
+    TierType=web \
+    VpcId=vpc-0123456789abcdef0
 ```
 
-#### Using Generic Mode (standalone with direct bucket name)
+Create an app tier target group with a port override:
 
 ```bash
-aws cloudformation create-stack \
-  --stack-name cfn-s3-policy-dev \
-  --template-body file://templates/s3-bucket-policy.yaml \
-  --parameters \
-    ParameterKey=BucketName,ParameterValue=my-existing-bucket \
-    ParameterKey=ProjectName,ParameterValue=""
+aws cloudformation deploy \
+  --template-file cloudformation/template.yaml \
+  --stack-name cfn-nested-app-tg-dev \
+  --parameter-overrides \
+    ProjectName=cfn-nested \
+    Environment=dev \
+    TierType=app \
+    Port=3002 \
+    VpcId=vpc-0123456789abcdef0
 ```
 
-#### Option C: Deploy with CI Suffix
+### 4. Validate the Template
 
 ```bash
-# Development with CI suffix (e.g., for GitLab CI)
-aws cloudformation create-stack \
-  --stack-name cfn-s3-bucket-dev-ci \
-  --template-body file://templates/s3-bucket.yaml \
-  --parameters \
-    ParameterKey=ProjectName,ParameterValue=myproject \
-    ParameterKey=BucketBaseName,ParameterValue=cfn-bucket \
-    ParameterKey=environment,ParameterValue=devl \
-    ParameterKey=CiSuffix,ParameterValue=$CI_PIPELINE_ID
+aws cloudformation validate-template --template-body file://cloudformation/template.yaml
+cfn-lint cloudformation/template.yaml
 ```
-
-## Bucket Naming Convention
-
-The templates generate bucket names using the following pattern:
-
-**Without CI Suffix:**
-
-```bash
-{ProjectName}-{BucketBaseName}-{AccountId}-{Environment}-{Region}
-```
-
-Example: `myproject-cfn-bucket-123456789012-devl-us-east-1`
-
-**With CI Suffix:**
-
-```bash
-{ProjectName}-{BucketBaseName}-{AccountId}-{Environment}-{Region}-{CiSuffix}
-```
-
-Example: `myproject-cfn-bucket-123456789012-devl-us-east-1-pipeline-12345`
 
 ## Best Practices Implemented
 
-- ✅ Versioning enabled by default
-- ✅ Public access blocked by default
-- ✅ Smart bucket naming with project prefix, account ID, environment, and region
-- ✅ Optional CI suffix support for unique deployments
-- ✅ Optional policy enforcement (encryption and secure transport)
+- ✅ One template for both web and app tiers, driven by `TierType`
+- ✅ IP target type for ECS/EKS and other IP-addressed backends
+- ✅ Health checks on the traffic port with explicit success codes
+- ✅ Consistent names, tags, and exports across tiers and environments
+- ✅ Optional CI suffix for unique deployments
 - ✅ Export values for cross-stack references
 
 ## License
