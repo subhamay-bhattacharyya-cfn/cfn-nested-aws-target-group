@@ -9,8 +9,8 @@ Parameters:
     Description: Short project name used in the target group name and tags
   Environment:
     Type: String
-    Default: "dev"
-    AllowedValues: [dev, staging, prod]
+    Default: "devl"
+    AllowedValues: [devl, test, prod]
   TierType:
     Type: String
     Default: "web"
