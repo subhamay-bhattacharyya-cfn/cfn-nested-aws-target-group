@@ -58,10 +58,10 @@ Resources:
       Name: !If
         - HasCiSuffix
         - !Sub
-          - "${ProjectName}-${Environment}-${ServiceName}-${Environment}-${AWS::Region}-tg-${CiSuffix}"
+          - "${ProjectName}-${ServiceName}-${Environment}-${AWS::Region}-tg-${CiSuffix}"
           - ServiceName: !FindInMap [TierSettings, !Ref TierType, ServiceName]
         - !Sub
-          - "${ProjectName}-${Environment}-${ServiceName}-${Environment}-${AWS::Region}-tg"
+          - "${ProjectName}-${ServiceName}-${Environment}-${AWS::Region}-tg"
           - ServiceName: !FindInMap [TierSettings, !Ref TierType, ServiceName]
       Protocol: HTTP
       Port: !If
