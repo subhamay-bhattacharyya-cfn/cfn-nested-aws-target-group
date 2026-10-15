@@ -1,4 +1,4 @@
-# CloudFormation Nested Stac Template : Target Group
+# CloudFormation Nested Stack Template : Target Group
 
 <!-- Row 1: Status - Most Important -->
 [![Release](https://img.shields.io/github/v/release/subhamay-bhattacharyya-cfn/cfn-nested-aws-target-group?label=Release)](https://github.com/subhamay-bhattacharyya-cfn/cfn-nested-aws-target-group/releases)&nbsp;[![Release Workflow](https://github.com/subhamay-bhattacharyya-cfn/cfn-nested-aws-target-group/actions/workflows/release.yaml/badge.svg)](https://github.com/subhamay-bhattacharyya-cfn/cfn-nested-aws-target-group/actions/workflows/release.yaml)&nbsp;[![Issues](https://img.shields.io/github/issues/subhamay-bhattacharyya-cfn/cfn-nested-aws-target-group)](https://github.com/subhamay-bhattacharyya-cfn/cfn-nested-aws-target-group/issues)&nbsp;[![Last Commit](https://img.shields.io/github/last-commit/subhamay-bhattacharyya-cfn/cfn-nested-aws-target-group)](https://github.com/subhamay-bhattacharyya-cfn/cfn-nested-aws-target-group/commits)
