@@ -1,5 +1,6 @@
 {
   "Environment": "devl",
+  "ProjectName": "cfn-nested",
   "VpcId": "vpc-0512b6cf184f1a7c6",
   "CiSuffix": ""
 }

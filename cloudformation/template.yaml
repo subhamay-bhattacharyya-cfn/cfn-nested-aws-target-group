@@ -4,7 +4,7 @@ Description: IP-type target group for a web (public) or app (internal) tier
 Parameters:
   ProjectName:
     Type: String
-    Default: "cfn"
+    Default: "cfn-nested"
     AllowedPattern: "^[a-z0-9-]{1,12}$"
     Description: Short project name used in the target group name and tags
   Environment:
